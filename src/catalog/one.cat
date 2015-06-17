@@ -1,0 +1,6 @@
+Welcher Mechanismus kann unter Unix zur Kommunikation über das Netzwerk verwendet werden?
+TIMEOUT: 25
++ Sockets
+- Message Queues
+- Pipes
+- Semaphore

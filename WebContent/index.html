@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" type="text/css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/script.js"></script>
+        <title>WebQuiz</title>
+    </head>
+    <body onload="init()">
+
+    <div class="container">
+        <div class="page-header">
+            <span style="font-size:26px;" class="glyphicon glyphicon-globe" aria-hidden="true">
+                    <input type="text" style="border-color: none; border-style: none;" name="header" id="header" size="10">
+            </span>
+        </div>
+        <section class="row">
+            <div class="pull-left col-md-8 questions" id="questions">
+                <div class="col-md-12">
+                    <div id=startGame></div>
+                </div>
+                <div id="startButton"></div>
+                <div class="col-md-8 form-horizontal" id=loginForm>
+                    <div class="input-group" id="inputGroup">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" id="btnSubmit" type="button" rel="popover" >Login</button>
+                        </span>
+                        <input type="text" class="form-control" id="username" placeholder="username">
+                    </div>
+                    
+                </div>
+                <div class="col-md-12">
+                    <div id=Error></div>
+                </div>
+            </div>
+            <div class="pull-right col-md-4 catalog">
+                <span style="font-size:22px;" class="glyphicon glyphicon-book" aria-hidden="true"> Catalogs</span>
+                <div class="pull-right col-md-12">
+                    <div class="row rowCatalog" id="rowCatalog">
+                    </div>
+                </div>
+            </div>
+            <div class="pull-right col-md-4 score">
+                <span style="font-size:22px;" class="glyphicon glyphicon-king" aria-hidden="true"> Highscore</span>
+                    <div class="pull-right col-md-12 player">
+                        <div class="row rowPlayer" id="rowPlayer0"></div>
+                        <div class="row rowPlayer" id="rowPlayer1"></div>
+                        <div class="row rowPlayer" id="rowPlayer2"></div>
+                        <div class="row rowPlayer" id="rowPlayer3"></div>
+                        <div class="row rowPlayer" id="rowPlayer4"></div>
+                        <div class="row rowPlayer" id="rowPlayer5"></div>
+                    </div>
+            </div>
+        </section> <!--Ende section-->
+
+        <div class="blog-footer">
+            <p class="text-left">Copyright 2015 - Christian Högerle | Corinna Wiest | Thomas Buck</p>
+        </div>
+    </div> <!--Ende container-->
+    </body>
+</html>

@@ -1,0 +1,128 @@
+body{
+    background-image: url("../pic/back.png");
+    font-family: Arial, serif;
+}
+.glyphicon-king {
+    padding-bottom: 20px;
+}
+
+.glyphicon-book{
+    padding-bottom: 20px;
+}
+
+.alert-danger {
+	position: fixed;
+	top: 525px;
+	left: 520px;
+	text-align: center;
+}
+.alert-success {
+    text-align: center;
+}
+
+.player1, .player2, .player3, .player4, .player5, .player0 {
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 2%;
+    background-color: #4F5445;
+    color: white;
+}
+
+.loginOKText {
+    font-weight: bold;
+    font-size: 26px;
+    color: white;
+}
+
+.rowPlayer1 {
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 2%;
+}
+
+.pCatalog {
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 2%;
+    background-color: #4F5445;
+    color: white;
+}
+
+
+.container {
+    background: white;
+    margin-top: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.questions {
+    margin-top: 2%;
+    border-radius: 15px;
+    height: 680px;
+    background: #4F5445;
+}
+
+.issue {
+    color: white;
+    margin-top: 2%;
+    border: 1px solid blue;
+    border-radius: 15px;
+    height: 200px;
+    font-size: 24px;
+    font-weight: bold;
+    border: 1px solid white;
+}
+.answer {
+    color: white;
+    margin-top: 2%;
+    border: 1px solid red;
+    border-radius: 15px;
+    height: 175px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid white;
+}
+
+.catalog {
+    margin-top: 2%;
+    border: 1px dotted black;
+    width: 27%;
+    background: #A2F700;
+    height: 330px;
+    padding-top: 1%;
+    color: black;
+}
+
+.score {
+    margin-top: 20px;
+    width: 27%;
+    height: 330px;
+    padding-top: 1%;
+    border: 1px dotted black;
+    background: #A2F700;
+    color: black;
+}
+
+.blog-footer {
+    margin-top: 2%;
+    font-weight: bold;
+}
+
+.form-horizontal {
+    background: transparent;
+    display: block;
+    margin-top: 220px;
+    margin-left: 20%;
+}
+
+.popover-title {
+    font-size: 20px;
+    text-align: center;
+}
+.popover-content {
+    font-size: 18px;
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="simple">
+    <question>
+        <issue>Welcher Mechanismus kann unter Unix zur Kommunikation über das Netzwerk verwendet werden?</issue>
+        <answer flag="true">Sockets</answer>
+        <answer>Message Queues</answer>
+        <answer>Pipes</answer>
+        <answer>Semaphore</answer>
+        <timeout>30</timeout>
+    </question>
+    <question>
+        <issue>Die Hauptstadt von Italien ist:</issue>
+        <answer flag="true">Rom</answer>
+        <answer>Athen</answer>
+        <answer>Bonn</answer>
+        <answer>Madrid</answer>
+        <timeout>30</timeout>
+    </question>
+</catalog>

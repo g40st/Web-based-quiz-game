@@ -1,0 +1,41 @@
+Welcher Mechanismus kann unter Unix zur Kommunikation über das Netzwerk verwendet werden?
+TIMEOUT: 10
++ Sockets
+- Message Queues
+- Pipes
+- Semaphore
+
+Die Hauptstadt von Italien ist:
+TIMEOUT: 10
++ Rom
+- Athen
+- Bonn
+- Madrid
+
+Die Quadratwurzel von 100 ist:
+TIMEOUT: 10
++ 10
+- 2,76
+- 5
+- 1
+
+1 + 1 = ?
+TIMEOUT: 10
++ 2
+- 1
+- 3
+- 4
+
+Spinnen...
+TIMEOUT: 10
++ ...haben 8 Beine
+- ...sind Insekten
+- ...sind Vögel
+- ...werden bis zu 100 Jahre alt
+
+Die Hauptstadt von Spanien ist:
+TIMEOUT: 10
++ Madrid
+- Barcelona
+- Rom
+- London
