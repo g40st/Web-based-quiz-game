@@ -172,7 +172,9 @@ function playerReceiveMessage(message){
 	// PlayerList
 	if(msgServer.Type == 6) {
 		countPlayer = msgServer.Length / 37;
-		checkEnoughPlayer();
+		if(gameStarted == false) {
+			checkEnoughPlayer();
+		}
 		// Alle bisherigen Spieler löschen
 		for(var i = 0; i < 6; i++) {
 			var player = document.getElementById("rowPlayer"+ i);
@@ -188,7 +190,7 @@ function playerReceiveMessage(message){
 			}
 			var para = document.createElement("p");
 			para.setAttribute("class","player" + i);
-			var t = document.createTextNode(msgServer.Players[i].Spielername);
+			var t = document.createTextNode(msgServer.Players[i].Spielername + "   "+ msgServer.Players[i].Punktestand);
 			para.appendChild(t);
 			player.appendChild(para);
 		}
@@ -226,7 +228,7 @@ function playerReceiveMessage(message){
 		};
 		playerSocket.send(JSON.stringify(questionRequest));
 	
-	} else if(msgServer.Type == 9) {
+	} else if(msgServer.Type == 9) { // Question
 		
 		// Loeschen
 		if(document.getElementById("startGame") != null) {
@@ -238,107 +240,128 @@ function playerReceiveMessage(message){
 			startGameBanner.parentNode.removeChild(startGameBanner);
 		}
 		
-		// Frage anzeigen
-		if(document.getElementById("idIssue") == null) {
-			var question = document.getElementById("questions");
-			var div = document.createElement("div");
-			div.setAttribute("class","col-md-12 issue");
-			div.setAttribute("id", "idIssue");
-			var t = document.createTextNode(msgServer.Frage);
-			div.appendChild(t);
-			question.appendChild(div);
-		} else {
-			var myNode = document.getElementById("idIssue");
-			while (myNode.firstChild) {
-			    myNode.removeChild(myNode.firstChild);
+		if(msgServer.Length == 769) {
+			// Frage anzeigen
+			if(document.getElementById("idIssue") == null) {
+				var question = document.getElementById("questions");
+				var div = document.createElement("div");
+				div.setAttribute("class","col-md-12 issue");
+				div.setAttribute("id", "idIssue");
+				var t = document.createTextNode(msgServer.Frage);
+				div.appendChild(t);
+				question.appendChild(div);
+			} else {
+				var myNode = document.getElementById("idIssue");
+				while (myNode.firstChild) {
+				    myNode.removeChild(myNode.firstChild);
+				}
+				var div = document.getElementById("idIssue");
+				var t = document.createTextNode(msgServer.Frage);
+				div.appendChild(t);
 			}
-			var div = document.getElementById("idIssue");
-			var t = document.createTextNode(msgServer.Frage);
-			div.appendChild(t);
-		}
-		
-		if(document.getElementById("0") == null) {
-			var question = document.getElementById("questions");
-			var div = document.createElement("div");
-			div.setAttribute("class","pull-left col-md-5 answer");
-			div.setAttribute("id", "0");
-			var t = document.createTextNode(msgServer.arrAnswer[0]);
-			div.appendChild(t);
-			div.addEventListener("mouseover", mouseOverListener);
-			div.addEventListener("mouseout", mouseOutListener);
-			div.addEventListener("click", mouseClickListener);
-			question.appendChild(div);
-		} else {
-			var myNode = document.getElementById("0");
-			while (myNode.firstChild) {
-			    myNode.removeChild(myNode.firstChild);
-			}
-			var div = document.getElementById("0");
-			var t = document.createTextNode(msgServer.arrAnswer[0]);
-			div.appendChild(t);
-		}
-		
-		if(document.getElementById("1") == null) {
-			var question = document.getElementById("questions");
-			var div = document.createElement("div");
-			div.setAttribute("class","pull-right col-md-5 answer");
-			div.setAttribute("id", "1");
-			var t = document.createTextNode(msgServer.arrAnswer[1]);
-			div.appendChild(t);
-			div.addEventListener("mouseover", mouseOverListener);
-			div.addEventListener("mouseout", mouseOutListener);
-			div.addEventListener("click", mouseClickListener);
-			question.appendChild(div);
-		} else {
-			var myNode = document.getElementById("1");
-			while (myNode.firstChild) {
-			    myNode.removeChild(myNode.firstChild);
-			}
-			var div = document.getElementById("1");
-			var t = document.createTextNode(msgServer.arrAnswer[1]);
-			div.appendChild(t);
-		}
 			
-		if(document.getElementById("2") == null) {
-			var question = document.getElementById("questions");
-			var div = document.createElement("div");
-			div.setAttribute("class","pull-left col-md-5 answer");
-			div.setAttribute("id", "2");
-			var t = document.createTextNode(msgServer.arrAnswer[2]);
-			div.appendChild(t);
-			div.addEventListener("mouseover", mouseOverListener);
-			div.addEventListener("mouseout", mouseOutListener);
-			div.addEventListener("click", mouseClickListener);
-			question.appendChild(div);
-		} else {
-			var myNode = document.getElementById("2");
-			while (myNode.firstChild) {
-			    myNode.removeChild(myNode.firstChild);
+			if(document.getElementById("0") == null) {
+				var question = document.getElementById("questions");
+				var div = document.createElement("div");
+				div.setAttribute("class","pull-left col-md-5 answer");
+				div.setAttribute("id", "0");
+				var t = document.createTextNode(msgServer.arrAnswer[0]);
+				div.appendChild(t);
+				div.addEventListener("mouseover", mouseOverListener);
+				div.addEventListener("mouseout", mouseOutListener);
+				div.addEventListener("click", mouseClickListener);
+				question.appendChild(div);
+			} else {
+				var myNode = document.getElementById("0");
+				while (myNode.firstChild) {
+				    myNode.removeChild(myNode.firstChild);
+				}
+				var div = document.getElementById("0");
+				var t = document.createTextNode(msgServer.arrAnswer[0]);
+				div.appendChild(t);
 			}
-			var div = document.getElementById("2");
-			var t = document.createTextNode(msgServer.arrAnswer[2]);
-			div.appendChild(t);
-		}
-		
-		if(document.getElementById("3") == null) {
-			var question = document.getElementById("questions");
-			var div = document.createElement("div");
-			div.setAttribute("class","pull-right col-md-5 answer");
-			div.setAttribute("id", "3");
-			var t = document.createTextNode(msgServer.arrAnswer[3]);
-			div.appendChild(t);
-			div.addEventListener("mouseover", mouseOverListener);
-			div.addEventListener("mouseout", mouseOutListener);
-			div.addEventListener("click", mouseClickListener);
-			question.appendChild(div);
-		} else {
-			var myNode = document.getElementById("3");
-			while (myNode.firstChild) {
-			    myNode.removeChild(myNode.firstChild);
+			
+			if(document.getElementById("1") == null) {
+				var question = document.getElementById("questions");
+				var div = document.createElement("div");
+				div.setAttribute("class","pull-right col-md-5 answer");
+				div.setAttribute("id", "1");
+				var t = document.createTextNode(msgServer.arrAnswer[1]);
+				div.appendChild(t);
+				div.addEventListener("mouseover", mouseOverListener);
+				div.addEventListener("mouseout", mouseOutListener);
+				div.addEventListener("click", mouseClickListener);
+				question.appendChild(div);
+			} else {
+				var myNode = document.getElementById("1");
+				while (myNode.firstChild) {
+				    myNode.removeChild(myNode.firstChild);
+				}
+				var div = document.getElementById("1");
+				var t = document.createTextNode(msgServer.arrAnswer[1]);
+				div.appendChild(t);
 			}
-			var div = document.getElementById("3");
-			var t = document.createTextNode(msgServer.arrAnswer[3]);
-			div.appendChild(t);
+				
+			if(document.getElementById("2") == null) {
+				var question = document.getElementById("questions");
+				var div = document.createElement("div");
+				div.setAttribute("class","pull-left col-md-5 answer");
+				div.setAttribute("id", "2");
+				var t = document.createTextNode(msgServer.arrAnswer[2]);
+				div.appendChild(t);
+				div.addEventListener("mouseover", mouseOverListener);
+				div.addEventListener("mouseout", mouseOutListener);
+				div.addEventListener("click", mouseClickListener);
+				question.appendChild(div);
+			} else {
+				var myNode = document.getElementById("2");
+				while (myNode.firstChild) {
+				    myNode.removeChild(myNode.firstChild);
+				}
+				var div = document.getElementById("2");
+				var t = document.createTextNode(msgServer.arrAnswer[2]);
+				div.appendChild(t);
+			}
+			
+			if(document.getElementById("3") == null) {
+				var question = document.getElementById("questions");
+				var div = document.createElement("div");
+				div.setAttribute("class","pull-right col-md-5 answer");
+				div.setAttribute("id", "3");
+				var t = document.createTextNode(msgServer.arrAnswer[3]);
+				div.appendChild(t);
+				div.addEventListener("mouseover", mouseOverListener);
+				div.addEventListener("mouseout", mouseOutListener);
+				div.addEventListener("click", mouseClickListener);
+				question.appendChild(div);
+			} else {
+				var myNode = document.getElementById("3");
+				while (myNode.firstChild) {
+				    myNode.removeChild(myNode.firstChild);
+				}
+				var div = document.getElementById("3");
+				var t = document.createTextNode(msgServer.arrAnswer[3]);
+				div.appendChild(t);
+			}
+		} else { // Keine Fragen mehr vorhanden
+			var loginF = document.getElementById("idIssue");
+			loginF.parentNode.removeChild(loginF);
+			for(var i = 0; i < 4; i++) {
+				var loginF = document.getElementById(i);
+				loginF.parentNode.removeChild(loginF);
+			}
+			
+			var append = document.getElementById("questions");
+			var div = document.createElement("div");
+			div.setAttribute("class", "col-md-8 form-horizontal");
+			var para = document.createElement("p");
+			para.setAttribute("class", "gameEnd");
+			para.setAttribute("id", "gameEnd");
+			var t1 = document.createTextNode("Warten auf andere Spieler!");
+			para.appendChild(t1);
+			div.appendChild(para);
+			append.appendChild(div);
+			
 		}
 			
 	} else if(msgServer.Type == 11) { // QuestionResult
@@ -363,13 +386,13 @@ function playerReceiveMessage(message){
 			for(var i = 0; i < 4; i++) {
 				var answers = document.getElementById(i);
 				answers.style.backgroundColor = "#4F5445";
-				// eine neue Frage holen
-				var questionRequest = {
-						"Type": "8",
-						"Length" : 0
-					};
-				playerSocket.send(JSON.stringify(questionRequest));
 			}
+			// eine neue Frage holen
+			var questionRequest = {
+					"Type": "8",
+					"Length" : 0
+				};
+			playerSocket.send(JSON.stringify(questionRequest));
 		}, 3000);
 	}
 		

@@ -35,6 +35,12 @@ body{
     color: white;
 }
 
+.gameEnd {
+    font-weight: bold;
+    font-size: 26px;
+    color: white;
+}
+
 .rowPlayer1 {
     border-radius: 10px;
     font-weight: bold;

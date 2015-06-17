@@ -156,18 +156,21 @@ public class PlayerEndpoint {
 		} else if(msgType == 8) { // questionRequest received
 			TimerTask timerTask = new TimerTaskThread(session);
 			Question question = new Question("dummy");
-			// TODO Fehlerfall
 			question = quiz.requestQuestion(ConnectionManager.getPlayer(session), timerTask, quizError);
-			if(question == null) {
+			if(question == null && quizError == null) { // Fehlerfall
 				JSONObject error = new JSONObject();
 				error.put("Type", "255");
 				error.put("Length", 1 + quizError.getDescription().length());
 				error.put("Subtype", "0");
 				error.put("Message", quizError.getDescription());
-				// Fehler direkt an Spielleiter
 				session.getBasicRemote().sendText(error.toJSONString());	
-			} else {
-				System.out.println("QuestionObjekt: " + question);
+			} else if(question == null && quizError != null) {	// keine weiteren Fragen mehr vorhanden
+				quiz.setDone(ConnectionManager.getPlayer(session));
+				JSONObject jsonQuestion = new JSONObject();
+				jsonQuestion.put("Type", "9");
+				jsonQuestion.put("Length", "0");
+				session.getBasicRemote().sendText(jsonQuestion.toJSONString());
+			} else { // naechste Frage senden
 				JSONObject jsonQuestion = new JSONObject();
 				jsonQuestion.put("Type", "9");
 				jsonQuestion.put("Length", "769");
@@ -201,6 +204,11 @@ public class PlayerEndpoint {
 				// Fehler direkt an Spielleiter
 				session.getBasicRemote().sendText(error.toJSONString());
 			}
+			// Spieler aktualisieren
+			if(!playerBroadcast.isAlive()) {
+				playerBroadcast = new BroadcastThread();
+				playerBroadcast.start();
+			} 
 			
 			
 		}
