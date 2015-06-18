@@ -10,19 +10,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 import org.jdom2.Document;
-import org.jdom2.Element;
 import org.jdom2.filter.Filters;
+import org.jdom2.Element;
 import org.jdom2.input.DOMBuilder;
-import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
-import org.xml.sax.SAXException;
+import org.jdom2.xpath.XPathExpression;
 
 import de.fhwgt.quiz.application.Catalog;
 import de.fhwgt.quiz.application.Question;
@@ -114,6 +113,7 @@ public class XMLloader implements CatalogLoader {
             }
             
             System.out.println("KatalogFile: " + catalogFile);
+            System.out.println("KatalogFile: " + catalogFile.getPath());
             // create the w3c DOM document from which JDOM is to be created
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             // we are interested in making it namespace aware.
@@ -127,7 +127,7 @@ public class XMLloader implements CatalogLoader {
 			}
             org.w3c.dom.Document w3cDocument = null;
 			try {
-				w3cDocument = dombuilder.parse(catalogFile);
+				w3cDocument = dombuilder.parse(catalogFile.getPath());
 			} catch (SAXException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

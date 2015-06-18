@@ -24,10 +24,7 @@ public interface QuestionLoader {
      * @param catalog Catalog with questions
      * @return List of questions
      * @throws LoaderException If loading of the catalog failed
-     * @throws IOException 
-     * @throws SAXException 
-     * @throws ParserConfigurationException 
      */
-    public List<Question> getQuestions(Catalog catalog) throws LoaderException, SAXException, IOException, ParserConfigurationException;
+    public List<Question> getQuestions(Catalog catalog) throws LoaderException;
 
 }
