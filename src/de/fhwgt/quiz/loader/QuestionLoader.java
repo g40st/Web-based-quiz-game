@@ -1,6 +1,11 @@
 package de.fhwgt.quiz.loader;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import de.fhwgt.quiz.application.Catalog;
 import de.fhwgt.quiz.application.Question;
@@ -19,7 +24,10 @@ public interface QuestionLoader {
      * @param catalog Catalog with questions
      * @return List of questions
      * @throws LoaderException If loading of the catalog failed
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws ParserConfigurationException 
      */
-    public List<Question> getQuestions(Catalog catalog) throws LoaderException;
+    public List<Question> getQuestions(Catalog catalog) throws LoaderException, SAXException, IOException, ParserConfigurationException;
 
 }

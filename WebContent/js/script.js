@@ -68,7 +68,7 @@ function clickCatalog(Event) {
 		var catalogChange = {
 				"Type": "5",
 				"Length" : activeCatalog.innerHTML.length,
-				"Filename" : activeCatalog.innerHTML + ".cat"
+				"Filename" : activeCatalog.innerHTML + ".xml"
 			};
 		
 		playerSocket.send(JSON.stringify(catalogChange));
@@ -199,7 +199,7 @@ function playerReceiveMessage(message){
 		for(var i = 0; i < countCatalog; i++) {
 			tmpCatalog = document.getElementById("catalog" + i);
 			tmpCatalog.style.color = "white";
-			if(tmpCatalog.innerHTML + ".cat" === msgServer.Message) {
+			if(tmpCatalog.innerHTML + ".xml" === msgServer.Message) {
 				tmpCatalog.style.color = "red";
 				catalogName = msgServer.Message;
 			}
