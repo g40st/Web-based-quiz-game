@@ -260,95 +260,45 @@ function playerReceiveMessage(message){
 				div.appendChild(t);
 			}
 			
-			if(document.getElementById("0") == null) {
-				var question = document.getElementById("questions");
-				var div = document.createElement("div");
-				div.setAttribute("class","pull-left col-md-5 answer");
-				div.setAttribute("id", "0");
-				var t = document.createTextNode(msgServer.arrAnswer[0]);
-				div.appendChild(t);
-				div.addEventListener("mouseover", mouseOverListener);
-				div.addEventListener("mouseout", mouseOutListener);
-				div.addEventListener("click", mouseClickListener);
-				question.appendChild(div);
-			} else {
-				var myNode = document.getElementById("0");
-				while (myNode.firstChild) {
-				    myNode.removeChild(myNode.firstChild);
+			for(var i = 0; i < 4; i++) {
+				if(document.getElementById(i) == null) {
+					var question = document.getElementById("questions");
+					var div = document.createElement("div");
+					if(i == 0 || i == 2) {
+						div.setAttribute("class","pull-left col-md-5 answer");
+					} else {
+						div.setAttribute("class","pull-right col-md-5 answer");
+					}
+					div.setAttribute("id", i);
+					var t = document.createTextNode(msgServer.arrAnswer[i]);
+					div.appendChild(t);
+					div.addEventListener("mouseover", mouseOverListener);
+					div.addEventListener("mouseout", mouseOutListener);
+					div.addEventListener("click", mouseClickListener);
+					question.appendChild(div);
+				} else {
+					var myNode = document.getElementById(i);
+					while (myNode.firstChild) {
+					    myNode.removeChild(myNode.firstChild);
+					}
+					var div = document.getElementById(i);
+					div.addEventListener("mouseover", mouseOverListener);
+					div.addEventListener("mouseout", mouseOutListener);
+					div.addEventListener("click", mouseClickListener);
+					var t = document.createTextNode(msgServer.arrAnswer[i]);
+					div.appendChild(t);
 				}
-				var div = document.getElementById("0");
-				var t = document.createTextNode(msgServer.arrAnswer[0]);
-				div.appendChild(t);
-			}
-			
-			if(document.getElementById("1") == null) {
-				var question = document.getElementById("questions");
-				var div = document.createElement("div");
-				div.setAttribute("class","pull-right col-md-5 answer");
-				div.setAttribute("id", "1");
-				var t = document.createTextNode(msgServer.arrAnswer[1]);
-				div.appendChild(t);
-				div.addEventListener("mouseover", mouseOverListener);
-				div.addEventListener("mouseout", mouseOutListener);
-				div.addEventListener("click", mouseClickListener);
-				question.appendChild(div);
-			} else {
-				var myNode = document.getElementById("1");
-				while (myNode.firstChild) {
-				    myNode.removeChild(myNode.firstChild);
-				}
-				var div = document.getElementById("1");
-				var t = document.createTextNode(msgServer.arrAnswer[1]);
-				div.appendChild(t);
-			}
-				
-			if(document.getElementById("2") == null) {
-				var question = document.getElementById("questions");
-				var div = document.createElement("div");
-				div.setAttribute("class","pull-left col-md-5 answer");
-				div.setAttribute("id", "2");
-				var t = document.createTextNode(msgServer.arrAnswer[2]);
-				div.appendChild(t);
-				div.addEventListener("mouseover", mouseOverListener);
-				div.addEventListener("mouseout", mouseOutListener);
-				div.addEventListener("click", mouseClickListener);
-				question.appendChild(div);
-			} else {
-				var myNode = document.getElementById("2");
-				while (myNode.firstChild) {
-				    myNode.removeChild(myNode.firstChild);
-				}
-				var div = document.getElementById("2");
-				var t = document.createTextNode(msgServer.arrAnswer[2]);
-				div.appendChild(t);
-			}
-			
-			if(document.getElementById("3") == null) {
-				var question = document.getElementById("questions");
-				var div = document.createElement("div");
-				div.setAttribute("class","pull-right col-md-5 answer");
-				div.setAttribute("id", "3");
-				var t = document.createTextNode(msgServer.arrAnswer[3]);
-				div.appendChild(t);
-				div.addEventListener("mouseover", mouseOverListener);
-				div.addEventListener("mouseout", mouseOutListener);
-				div.addEventListener("click", mouseClickListener);
-				question.appendChild(div);
-			} else {
-				var myNode = document.getElementById("3");
-				while (myNode.firstChild) {
-				    myNode.removeChild(myNode.firstChild);
-				}
-				var div = document.getElementById("3");
-				var t = document.createTextNode(msgServer.arrAnswer[3]);
-				div.appendChild(t);
 			}
 		} else { // Keine Fragen mehr vorhanden
-			var loginF = document.getElementById("idIssue");
-			loginF.parentNode.removeChild(loginF);
+			if(document.getElementById("idIssue") != null) {
+				var issue = document.getElementById("idIssue");
+				issue.parentNode.removeChild(issue);
+			}
 			for(var i = 0; i < 4; i++) {
-				var loginF = document.getElementById(i);
-				loginF.parentNode.removeChild(loginF);
+				if(document.getElementById(i) != null) {
+					var answer = document.getElementById(i);
+					answer.parentNode.removeChild(answer);
+				}
 			}
 			
 			var append = document.getElementById("questions");
@@ -365,6 +315,13 @@ function playerReceiveMessage(message){
 		}
 			
 	} else if(msgServer.Type == 11) { // QuestionResult
+		// Listener entfernen
+		for(var i = 0; i < 4; i++) {
+			var div = document.getElementById(i);
+			div.removeEventListener("mouseover", mouseOverListener);
+			div.removeEventListener("mouseout", mouseOutListener);
+			div.removeEventListener("click", mouseClickListener);
+		}
 		if(msgServer.TimedOut == 1) { // Wenn die Frage timedOut
 			for(var i = 0; i < 4; i++) {
 				var answers = document.getElementById(i);
@@ -394,6 +351,11 @@ function playerReceiveMessage(message){
 				};
 			playerSocket.send(JSON.stringify(questionRequest));
 		}, 3000);
+		
+	} else if(msgServer.Type == 12) { // Spielende
+		playerSocket.close();
+		alert("Spielende\nPlatzierung: " + msgServer.Rank);
+		location.reload();
 	}
 		
 	// Spielelogik meldet Fehler
@@ -415,7 +377,8 @@ function playerReceiveMessage(message){
 					}
 				}
 				playerSocket.close();
-				alert(msgServer.Message);
+				alert("Spiel wird beendet!\n Ursache: " + msgServer.Message);
+				location.reload();
 			} else {
 				var errorElement = document.getElementById("Error");
 				var div = document.createElement("div");

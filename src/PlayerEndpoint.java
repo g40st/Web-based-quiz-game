@@ -165,11 +165,32 @@ public class PlayerEndpoint {
 				error.put("Message", quizError.getDescription());
 				session.getBasicRemote().sendText(error.toJSONString());	
 			} else if(question == null && quizError != null) {	// keine weiteren Fragen mehr vorhanden
-				quiz.setDone(ConnectionManager.getPlayer(session));
 				JSONObject jsonQuestion = new JSONObject();
 				jsonQuestion.put("Type", "9");
 				jsonQuestion.put("Length", "0");
 				session.getBasicRemote().sendText(jsonQuestion.toJSONString());
+				
+				if(quiz.setDone(ConnectionManager.getPlayer(session)) == true) { // Spielende
+					// Platzierungen ermitteln und an Spieler senden
+					Set<Session> sessionsSet = ConnectionManager.getSessions();
+					for(Session tmpSession : sessionsSet) {
+						Player sessionPlayer = ConnectionManager.getPlayer(tmpSession);
+						long sessionPlayerScore = sessionPlayer.getScore();
+						int rank = 1;
+						Collection<Player> allPlayer = quiz.getPlayerList();
+						for(Player entry : allPlayer) {
+							if(entry.getScore() > sessionPlayerScore) {
+								rank++;
+							}
+						}
+						JSONObject gameOver = new JSONObject();
+						gameOver.put("Type", "12");
+						gameOver.put("Length", "1");
+						gameOver.put("Rank", rank);
+						tmpSession.getBasicRemote().sendText(gameOver.toJSONString());
+					}
+				}
+				
 			} else { // naechste Frage senden
 				JSONObject jsonQuestion = new JSONObject();
 				jsonQuestion.put("Type", "9");
