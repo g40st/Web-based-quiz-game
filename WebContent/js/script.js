@@ -25,7 +25,11 @@ function init() {
     request.send(catalogRequest);
     
     // PlayerSocket anlegen
-	var url = 'ws://' + window.location.hostname + ':8080/Aufgabe4/player';
+    var url = window.location.pathname;
+    var path = url.lastIndexOf("/");
+    var result = url.substring(0,path);
+    
+	url = 'ws://' + window.location.hostname + (location.port ? ':' + location.port :'') + result +'/player';
 	playerSocket=new WebSocket(url);
 	playerSocket.onopen=playerOpened;
 	playerSocket.onclose=playerClosed;
