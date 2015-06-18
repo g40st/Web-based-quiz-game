@@ -146,25 +146,33 @@ public class XMLloader implements CatalogLoader {
             XPathExpression<Element> expr = xpathFactory.compile("/catalog/question/issue | /catalog/question/answer | /catalog/question/timeout", Filters.element());
             List<Element> tmpCatalog = expr.evaluate(jdomDocument);
             
+            System.out.println("Laenge: " + tmpCatalog.size());
             Question question = null;
+            int i = 0;
+            boolean finished = false;
             for (Element catElement : tmpCatalog) {
-            	// Frage in QuestionObjekt
-            	question = new Question(catElement.getValue());
-            	// Antworten in QuestionObjekt
-            	for(int i = 0; i < 3; i++) {
-            		if(i == 0) {
-            			question.addAnswer(catElement.getValue());
-            		} else {
-            			question.addBogusAnswer(catElement.getValue());
-            		}
+            	if(i == 0) {
+            		System.out.println("Question: " + catElement.getValue());
+            		question = new Question(catElement.getValue());
+            	} else if(i == 1) {
+            		System.out.println("correct: " + catElement.getValue());
+            		question.addAnswer(catElement.getValue());
+            	} else if(i < 5) {
+            		System.out.println("false: " + catElement.getValue());
+            		question.addBogusAnswer(catElement.getValue());
+            		
+            	} else {
+            		System.out.println("timeout: " + catElement.getValue());
+            		question.setTimeout(Long.parseLong(catElement.getValue()));
+            		i = -1;
+            		finished = true;
             	}
-            	// TimeOut in QuestionObjekt
-            	question.setTimeout(Long.parseLong(catElement.getValue()));
-            	
-            	if (question.isComplete()) {
+            	i++;
+            	if (finished) {
                     // Add some randomization
                     question.shuffleAnswers();
                     questions.add(question);
+                    finished = false;
             	}
             }
             
