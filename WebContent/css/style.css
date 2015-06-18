@@ -11,9 +11,9 @@ body{
 }
 
 .alert-danger {
-	position: fixed;
-	top: 525px;
-	left: 520px;
+	margin: 0 auto;
+	margin-top: 10px;
+	display: inline-block;
 	text-align: center;
 }
 .alert-success {
@@ -70,6 +70,7 @@ body{
     border-radius: 15px;
     height: 680px;
     background: #4F5445;
+    text-align: center;
 }
 
 .issue {

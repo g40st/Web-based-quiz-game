@@ -49,14 +49,6 @@
         <timeout>30</timeout>
     </question>
     <question>
-        <issue></issue>
-        <answer flag="true">bind</answer>
-        <answer>accept</answer>
-        <answer>setsock</answer>
-        <answer>open</answer>
-        <timeout>30</timeout>
-    </question>
-    <question>
         <issue>Während eines read-Aufrufs tritt ein Signal auf und wird durch einen Signalhandler abgearbeitet (SA_RESTART nicht gesetzt). Was passiert?</issue>
         <answer flag="true">Der Aufruf kehrt unter Umständen mit weniger Daten als angefordert oder EINTR zurück.</answer>
         <answer>Es werden auf jeden Fall so viele Daten gelesen wie angefordert.</answer>
