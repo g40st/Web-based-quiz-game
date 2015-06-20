@@ -112,8 +112,6 @@ public class XMLloader implements CatalogLoader {
                 return questions;
             }
             
-            System.out.println("KatalogFile: " + catalogFile);
-            System.out.println("KatalogFile: " + catalogFile.getPath());
             // create the w3c DOM document from which JDOM is to be created
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             // we are interested in making it namespace aware.

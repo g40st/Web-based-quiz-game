@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/javax.websocket-api-1.0-rc5.jar"/>
 	<classpathentry kind="lib" path="/home/ghost/Projects/apache-tomcat-7.0.62/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/home/ghost/Projects/Aufgabe4/WebContent/WEB-INF/lib/jdom-2.0.6.jar"/>
-	<classpathentry kind="lib" path="/home/ghost/Projects/Aufgabe4/WebContent/WEB-INF/lib/jaxen-1.1.6.jar"/>
+	<classpathentry kind="lib" path="/home/ghost/Projects/Webquiz/WebContent/WEB-INF/lib/jdom-2.0.6.jar"/>
+	<classpathentry kind="lib" path="/home/ghost/Projects/Webquiz/WebContent/WEB-INF/lib/jaxen-1.1.6.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

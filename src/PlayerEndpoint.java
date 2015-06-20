@@ -99,7 +99,7 @@ public class PlayerEndpoint {
 					error.put("Subtype", "1");
 					error.put("Message", quizError.getDescription());
 					System.out.println(error);
-					session.getBasicRemote().sendText(error.toJSONString());
+					sendJSON(session, error);
 				} else { // Username in Ordnung
 					JSONObject player = new JSONObject();
 					player.put("Type", "2");
@@ -107,9 +107,11 @@ public class PlayerEndpoint {
 					player.put("ClientID", tmpPlayer.getId());
 					ConnectionManager.addSession(session, tmpPlayer);
 					ConnectionManager.removeTmpSession(session);
-					session.getBasicRemote().sendText(player.toJSONString());
-					playerBroadcast = new BroadcastThread();
-					playerBroadcast.start();
+					sendJSON(session, player);
+					if(!playerBroadcast.isAlive()) {
+						playerBroadcast = new BroadcastThread();
+						playerBroadcast.start();
+					} 
 				}
 			} else { // kein Username eingegeben
 				JSONObject error = new JSONObject();
@@ -117,7 +119,7 @@ public class PlayerEndpoint {
 				error.put("Length", 17);
 				error.put("Subtype", "1");
 				error.put("Message", "Username required");
-				session.getBasicRemote().sendText(error.toJSONString());
+				sendJSON(session, error);
 			}	
 		} else if (msgType == 5) { // CatalogChange  
 			int msgLength = Integer.parseInt((String) jsonMessage.get("Length").toString());
@@ -128,7 +130,7 @@ public class PlayerEndpoint {
 					error.put("Length", 1 + quizError.getDescription().length());
 					error.put("Subtype", "0");
 					error.put("Message", quizError.getDescription());
-					session.getBasicRemote().sendText(error.toJSONString());
+					sendJSON(session, error);
 				} else {
 					JSONObject catalogChange = new JSONObject();
 					catalogChange.put("Type", "5");
@@ -145,7 +147,7 @@ public class PlayerEndpoint {
 				error.put("Subtype", "0");
 				error.put("Message", quizError.getDescription());
 				// Fehler direkt an Spielleiter
-				session.getBasicRemote().sendText(error.toJSONString());
+				sendJSON(session, error);
 			} else {
 				JSONObject startGame = new JSONObject();
 				startGame.put("Type", "7");
@@ -163,12 +165,12 @@ public class PlayerEndpoint {
 				error.put("Length", 1 + quizError.getDescription().length());
 				error.put("Subtype", "0");
 				error.put("Message", quizError.getDescription());
-				session.getBasicRemote().sendText(error.toJSONString());	
+				sendJSON(session, error);	
 			} else if(question == null && quizError != null) {	// keine weiteren Fragen mehr vorhanden
 				JSONObject jsonQuestion = new JSONObject();
 				jsonQuestion.put("Type", "9");
 				jsonQuestion.put("Length", "0");
-				session.getBasicRemote().sendText(jsonQuestion.toJSONString());
+				sendJSON(session, jsonQuestion);
 				
 				if(quiz.setDone(ConnectionManager.getPlayer(session)) == true) { // Spielende
 					// Platzierungen ermitteln und an Spieler senden
@@ -187,7 +189,7 @@ public class PlayerEndpoint {
 						gameOver.put("Type", "12");
 						gameOver.put("Length", "1");
 						gameOver.put("Rank", rank);
-						tmpSession.getBasicRemote().sendText(gameOver.toJSONString());
+						sendJSON(tmpSession, gameOver);
 					}
 				}
 				
@@ -202,7 +204,7 @@ public class PlayerEndpoint {
 				}
 				jsonQuestion.put("arrAnswer", arrAnswer);
 				jsonQuestion.put("Zeitlimit", question.getTimeout());
-				session.getBasicRemote().sendText(jsonQuestion.toJSONString());
+				sendJSON(session, jsonQuestion);
 			}
 			
 		} else if(msgType == 10) { // qestionResult
@@ -215,7 +217,7 @@ public class PlayerEndpoint {
 				jsonQuestionResult.put("Length", "2");
 				jsonQuestionResult.put("TimedOut", "0");
 				jsonQuestionResult.put("Correct", questionAnswered);
-				session.getBasicRemote().sendText(jsonQuestionResult.toJSONString());	
+				sendJSON(session, jsonQuestionResult);
 			} else {
 				JSONObject error = new JSONObject();
 				error.put("Type", "255");
@@ -223,7 +225,7 @@ public class PlayerEndpoint {
 				error.put("Subtype", "0");
 				error.put("Message", quizError.getDescription());
 				// Fehler direkt an Spielleiter
-				session.getBasicRemote().sendText(error.toJSONString());
+				sendJSON(session, error);
 			}
 			// Spieler aktualisieren
 			if(!playerBroadcast.isAlive()) {
@@ -235,29 +237,28 @@ public class PlayerEndpoint {
 		}
 	}
 	
+	public static synchronized void sendJSON(Session session, JSONObject tmp) {
+		try {
+			session.getBasicRemote().sendText(tmp.toJSONString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private static void sendToAllSessions(JSONObject error) {
 		// Alle aktiven Sessions durchgehen
 		Set<Session> tmpMap = ConnectionManager.getSessions();
 		for(Iterator<Session> iter = tmpMap.iterator(); iter.hasNext(); ) {
 			Session s = iter.next();
-			try {
-				s.getBasicRemote().sendText(error.toJSONString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+			sendJSON(s, error);
 		}
 		
 		// Alle temp Sessions durchgehen, um die Spielerliste aktuell anzuzeigen
 		List<Session> tmpSessions = ConnectionManager.getTmpSessions();
 		if(tmpSessions.size() > 0) {
 			for (Session tempS : tmpSessions) {
-				try {
-					tempS.getBasicRemote().sendText(error.toJSONString());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				sendJSON(tempS, error);
 			}
 		}
 	}
@@ -296,24 +297,14 @@ class BroadcastThread extends Thread {
     		for(Iterator<Session> iter = tmpMap.iterator(); iter.hasNext(); ) {
     			Session s = iter.next();
     			// PlayerList message
-    			try {
-					s.getBasicRemote().sendText(playerList.toJSONString());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
+    			PlayerEndpoint.sendJSON(s, playerList);
     		}
     		
     		// Alle temp Sessions durchgehen, um die Spielerliste aktuell anzuzeigen
     		List<Session> tmpSessions = ConnectionManager.getTmpSessions();
     		if(tmpSessions.size() > 0) {
     			for (Session tempS : tmpSessions) {
-    				try {
-    					tempS.getBasicRemote().sendText(playerList.toJSONString());
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
+    				PlayerEndpoint.sendJSON(tempS, playerList);
     			}
     		}
     	}

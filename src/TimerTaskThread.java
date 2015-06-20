@@ -9,7 +9,7 @@ import de.fhwgt.quiz.application.Quiz;
 import de.fhwgt.quiz.error.QuizError;
 
 
-public class TimerTaskThread extends TimerTask{
+public class TimerTaskThread extends TimerTask {
 	
 	Session session;
 	
