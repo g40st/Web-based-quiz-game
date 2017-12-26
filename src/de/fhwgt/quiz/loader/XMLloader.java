@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,23 +45,11 @@ public class XMLloader implements CatalogLoader {
 		if (!catalogs.isEmpty()) {
             return catalogs;
         }
-
-        // Construct URL for package location
-        URL url = this.getClass().getClassLoader().getResource(location);
-        
-        
+       
         File dir;
-        try {
-            // Make sure the Java package exists
-            if (url != null) {
-                dir = new File(url.toURI());
-            } else {
-                dir = new File("/");
-            }
-        } catch (URISyntaxException e) {
-            // Try to load from the root of the classpath
-            dir = new File("/");
-        }
+        // Make sure the Java package exists
+        dir = new File(this.location);
+            
         // Add catalog files
         if (dir.exists() && dir.isDirectory()) {
             this.catalogDir = dir.listFiles(new CatalogFilter());

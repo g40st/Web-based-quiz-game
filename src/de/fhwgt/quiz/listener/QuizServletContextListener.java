@@ -20,8 +20,10 @@ public class QuizServletContextListener implements ServletContextListener {
  
     public void contextInitialized(ServletContextEvent servletContextEvent) {
     	ServletContext cntxt = servletContextEvent.getServletContext();
-        //FilesystemLoader filesystemLoader = new FilesystemLoader("catalog");
-        XMLloader xmlLoader = new XMLloader("catalog");
+        String fullPath = cntxt.getRealPath("/WEB-INF/catalog");
+
+        //FilesystemLoader filesystemLoader = new FilesystemLoader(fullPath);
+        XMLloader xmlLoader = new XMLloader(fullPath);
         Quiz quiz = Quiz.getInstance();
         //quiz.initCatalogLoader(filesystemLoader);
         quiz.initCatalogLoader(xmlLoader);

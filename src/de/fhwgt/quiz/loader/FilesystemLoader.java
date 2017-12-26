@@ -59,29 +59,18 @@ public class FilesystemLoader implements CatalogLoader {
             return catalogs;
         }
 
-        // Construct URL for package location
-        URL url = this.getClass().getClassLoader().getResource(location);
-        
-        
         File dir;
-        try {
-            // Make sure the Java package exists
-            if (url != null) {
-                dir = new File(url.toURI());
-            } else {
-                dir = new File("/");
-            }
-        } catch (URISyntaxException e) {
-            // Try to load from the root of the classpath
-            dir = new File("/");
-        }
+        // Make sure the Java package exists
+        dir = new File(this.location);
+        
         // Add catalog files
         if (dir.exists() && dir.isDirectory()) {
             this.catalogDir = dir.listFiles(new CatalogFilter());
+            System.out.println(catalogDir);
             for (File f : catalogDir) {
                 catalogs.put(f.getName(), new Catalog(f.getName(), new QuestionFileLoader(f)));
                 // Namen der Kataloge ausgeben
-                //System.out.println(f.getName());
+                System.out.println(f.getName());
             }
         }
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" ?> 
+<project name="webquiz" default="deploy" basedir=".">
+    <property name="build"    value="${basedir}/dist"/>
+    <!-- Configure the context path for this application -->
+    <property name="path"     value="/webquiz"/>
+
+    <!-- Configure properties to access the Manager application -->
+    <property name="url"      value="http://localhost:8080/manager/text"/>
+    <!--<property name="url"      value="http://192.168.178.41:8080/manager/text"/>-->
+    <property name="username" value="admin"/>
+    <property name="password" value="admin"/>
+
+    <!-- Configure the path to the Tomcat installation -->
+    <property name="catalina.home" value="/opt/tomcat"/>
+
+    <!-- Configure the custom Ant tasks for the Manager application -->
+    <import file="${catalina.home}/bin/catalina-tasks.xml"/>
+
+    <path id="compile.classpath">
+        <fileset dir="WebContent/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <mkdir dir="dist" />
+    </target>
+    
+    <target name="compile" depends="init" >
+        <javac destdir="build/classes" debug="true" debuglevel="lines" srcdir="src">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+    
+    <target name="war" depends="compile">
+        <war destfile="dist/webquiz.war" webxml="WebContent/WEB-INF/web.xml">
+            <fileset dir="WebContent"/>
+            <lib dir="WebContent/WEB-INF/lib"/>
+            <classes dir="build/classes"/>
+        </war>
+    </target>
+
+    <target name="undeploy" description="Remove web application" depends="war">
+    <undeploy url="${url}" username="${username}" password="${password}"
+            path="${path}"/>
+    </target>
+
+        <target name="deploy" description="Install web application"
+          depends="undeploy">
+    <deploy url="${url}" username="${username}" password="${password}"
+            path="${path}" war="file:${build}${path}.war"/>
+    </target>
+
+    <target name="reload" description="Reload web application"
+          depends="deploy">
+    <reload  url="${url}" username="${username}" password="${password}"
+            path="${path}"/>
+    </target>
+    
+    <target name="clean">
+        <delete dir="dist" />
+        <delete dir="build" />
+    </target>
+    
+</project>
