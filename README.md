@@ -2,7 +2,7 @@
 
 This is a web-based quiz game.
 
-ATTENTION: There is no security measures implemented like session handling. You can reengineer the communication protocol to access all functions. Therefore do not use this web-based quiz game on a public network. 
+ATTENTION: There are no security measures implemented like session handling. You can reengineer the communication protocol to access all functions. Therefore do not use this web-based quiz game on a public network. 
 
 ![quiz](https://user-images.githubusercontent.com/7523395/34353580-4e55baa4-ea29-11e7-9e03-906e91948b12.gif)
 
